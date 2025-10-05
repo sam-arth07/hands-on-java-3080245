@@ -14,7 +14,6 @@ public class DataSource {
 
     try {
       connection = DriverManager.getConnection(db_file_url);
-      System.err.println("We are connected");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -64,14 +63,17 @@ public class DataSource {
     return account;
   }
 
-  public static void main(String[] args) {
-    Customer customer = getCustomer("telloy3x@bigcartel.com");
-    Account account = getAccount(customer.getAccountId());
-    System.out.println(customer.getName());
-    System.out.println(customer.getUsername());
+  public static void updateAccountBalance(int account_id, double balance) {
+    String query = "update accounts set balance = ? where id = ?";
+    try(Connection connection = connect();
+    PreparedStatement statement = connection.prepareStatement(query)) {
+      statement.setDouble(1, balance);
+      statement.setInt(2,account_id); 
 
-    System.out.println("------------------------");
-    System.out.println(account.getId());
-    System.out.println(account.getBalance());
+      statement.executeUpdate();
+    
+    } catch(SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

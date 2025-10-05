@@ -38,16 +38,26 @@ public class Account {
   }
 
   public void deposit(double amount) throws AmountException {
-    if(amount < 1) {
+    if(amount < 0) {
       throw new AmountException("The Minimum Deposit is Rs. 1.00");
     } else {
       double newBalance = balance + amount;
-      setBalance(newBalance);
-      
+      setBalance(newBalance); 
+      DataSource.updateAccountBalance(id, newBalance);
     }
   }
 
-  public void withdraw(double amount) {
-
+  public void withdraw(double amount) throws AmountException {
+    if(amount < 0) {
+      throw new AmountException("The Minimum Withdrawal amount must be greater than 0.0");
+    } else {
+        double newBalance = balance - amount;
+        if(newBalance < 0) {
+          throw new AmountException("Insufficient Balance");
+        } else {
+          setBalance(newBalance);
+          DataSource.updateAccountBalance(id, newBalance);
+        }
+     }
   }
 } 

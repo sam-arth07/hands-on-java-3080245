@@ -48,13 +48,18 @@ public class Menu {
             System.out.println(e.getMessage());
             System.out.println("Please Try again later!");
           }
-
-          System.out.println(amount + "Rs. Successfully deposited in account with id, " + account.getId());
+          
+          System.out.println("Rs. " +   amount + " Successfully deposited in account with id, " + account.getId());
           break;
         case 2:
           System.out.println("How much would you like to withdraw? (in Rs.): ");
           amount = scanner.nextDouble();
-          account.withdraw(amount);
+          try {
+            account.withdraw(amount);
+          } catch (AmountException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Please Try again later!");
+          }
           System.out.println("Remaining Balance: " + account.getBalance());
           break;
 
